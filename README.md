@@ -1,4 +1,4 @@
-## La base de datos esta hecha en SQL Server y con este query puedes crear sus tablas
+## La base de datos esta hecha 
 
 ### Servidor: Localhost
 ### Nombre: ParkingDB
