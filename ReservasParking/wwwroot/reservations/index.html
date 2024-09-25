@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+    <a type="button" class="btn btn-primary" href="/reservations/new">New</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Hora de entrada</th>
+                <th scope="col">Hora de salida</th>
+                <th scope="col">Parking</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+    </table>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js" integrity="sha512-DdX/YwF5e41Ok+AI81HI8f5/5UsoxCVT9GKYZRIzpLxb8Twz4ZwPPX+jQMwMhNQ9b5+zDEefc+dcvQoPWGNZ3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+
+        const userId = JSON.parse(localStorage.getItem("sessionToken"))
+        if (!userId) window.location.href = "/register"
+
+        const createRow = ({ id, entry_hour, left_hour, parking_id }) => `
+            <tr>
+                <th scope="row">${id}</th>
+                <td>${entry_hour}</td>
+                <td>${left_hour}</td>
+                <td>${parking_id}</td>
+            </tr>
+            `
+
+        async function getRows() {
+
+            const tableBody = document.getElementById("tableBody")
+
+            const rows = (await axios.get("/api/reservations/getall")).data
+
+            const filteredRows = rows.filter(({ user_id }) => userId == user_id)
+            console.log(filteredRows)
+            filteredRows.forEach((row) => {
+                tableBody.innerHTML += createRow(row)
+            })
+        }
+
+        getRows()
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <form>
+        <div class="form-group">
+            <label for="txtEmail">Email</label>
+            <input type="email" class="form-control" id="txtEmail" aria-describedby="emailHelp">
+        </div>
+        <div class="form-group">
+            <label for="txtPassword">Password</label>
+            <input type="password" class="form-control" id="txtPassword">
+        </div>
+        <button type="button" class="btn btn-primary" onclick="handleLogin()">Submit</button>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js" integrity="sha512-DdX/YwF5e41Ok+AI81HI8f5/5UsoxCVT9GKYZRIzpLxb8Twz4ZwPPX+jQMwMhNQ9b5+zDEefc+dcvQoPWGNZ3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        
+        async function handleLogin() {
+            const email = document.getElementById("txtEmail").value
+            const password = document.getElementById("txtPassword").value
+
+            const res = await axios.post("/api/users/login", { userLogin: { email, password }, email, password })
+
+            if(res.status != 200) return
+
+            localStorage.setItem("sessionToken", JSON.stringify(res.data.value))
+
+            window.location.href = "/reservations"
+        }
+
+    </script>
+</body>
+</html>
